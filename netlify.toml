@@ -1,0 +1,32 @@
+# Netlify-Konfiguration — Beyond Hands-On (statische Seite)
+
+[build]
+  publish = "."
+
+# Interne Doku nicht öffentlich ausliefern
+[[redirects]]
+  from = "/README.md"
+  to = "/404.html"
+  status = 404
+  force = true
+
+# Sicherheits-Header für alle Seiten
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+
+# Schriften lange cachen (ändern sich nie)
+[[headers]]
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Bilder: kurzer Cache während der Bauphase (vor Launch wieder hochsetzen)
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600, must-revalidate"

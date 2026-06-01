@@ -1,0 +1,32 @@
+# macOS
+.DS_Store
+._*
+
+# Editor
+.vscode/
+.idea/
+
+# Logs / temp
+*.log
+.firecrawl/
+node_modules/
+
+# Lokale Umgebungsvariablen (z. B. INWX-API-Zugang) NIEMALS committen!
+.env
+.env.*
+*.secret
+inwx-*.json
+
+# Local Netlify folder
+.netlify
+
+# Bild-Quell-Originale (nicht deployen – nur web-optimierte Versionen werden genutzt)
+images/2CAD5D11*
+images/5.jpeg
+images/Gemini_Generated_Image*
+images/Gruppenbild*
+images/Kai*
+images/WhatsApp*
+images/dampsoft-*
+images/favicon
+images/team-path.jpg
