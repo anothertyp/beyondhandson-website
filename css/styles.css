@@ -200,6 +200,12 @@ section { scroll-margin-top: calc(var(--header-h) + 16px); }
 .btn--ghost:hover { background: var(--bg-alt); transform: translateY(-1px); }
 .btn--lg { padding: 17px 32px; font-size: 1.06rem; border-radius: 13px; }
 .btn--block { width: 100%; }
+.btn--soldout {
+  background: #9aa3af;
+  cursor: default;
+  pointer-events: none;
+  box-shadow: none;
+}
 
 /* ---- Header ------------------------------------------------------------- */
 .site-header {

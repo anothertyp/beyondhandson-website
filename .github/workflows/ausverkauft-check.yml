@@ -1,0 +1,73 @@
+name: Ausverkauft-Check (Stripe)
+
+# Fragt alle 30 Minuten den Stripe Payment Link ab (Limit: 20 Buchungen)
+# und aktualisiert status.json, sobald sich der Buchungsstand ändert.
+# Die Website liest status.json und zeigt dann automatisch "Ausverkauft".
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Stripe abfragen und status.json aktualisieren
+        env:
+          STRIPE_KEY: ${{ secrets.STRIPE_KEY }}
+        run: |
+          python3 - <<'EOF'
+          import base64, datetime, json, urllib.request
+
+          import os
+          key = os.environ["STRIPE_KEY"]
+          req = urllib.request.Request(
+              "https://api.stripe.com/v1/payment_links/plink_1ThZcWRvwD6WL59VGRwLAiI8",
+              headers={"Authorization": "Basic " + base64.b64encode((key + ":").encode()).decode()},
+          )
+          d = json.load(urllib.request.urlopen(req))
+          r = (d.get("restrictions") or {}).get("completed_sessions") or {}
+          booked = int(r.get("count") or 0)
+          limit = int(r.get("limit") or 20)
+          sold_out = (not d.get("active", True)) or booked >= limit
+
+          status = {
+              "soldOut": bool(sold_out),
+              "booked": booked,
+              "limit": limit,
+              "checkedAt": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"),
+          }
+
+          try:
+              with open("status.json") as f:
+                  old = json.load(f)
+          except Exception:
+              old = None
+
+          core = ("soldOut", "booked", "limit")
+          if old and all(old.get(k) == status[k] for k in core):
+              print("Keine Änderung – status.json bleibt unangetastet.")
+          else:
+              with open("status.json", "w") as f:
+                  json.dump(status, f, indent=2, ensure_ascii=False)
+                  f.write("\n")
+              print("status.json aktualisiert:", status)
+          EOF
+
+      - name: Committen falls geändert
+        run: |
+          if git diff --quiet -- status.json; then
+            echo "Nichts zu committen."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add status.json
+            git commit -m "status.json: Buchungsstand aktualisiert"
+            git push
+          fi

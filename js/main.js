@@ -21,6 +21,32 @@
   }
 
   /* -----------------------------------------------------------------------
+     1b) AUSVERKAUFT-STATUS
+     status.json wird alle 30 Min. von einer GitHub Action aus Stripe
+     aktualisiert (Payment Link ist auf 20 Buchungen begrenzt).
+     ----------------------------------------------------------------------- */
+  fetch("status.json?t=" + Date.now(), { cache: "no-store" })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (s) {
+      if (!s || !s.soldOut) return;
+      document.querySelectorAll(".js-book").forEach(function (el) {
+        el.textContent = "Ausverkauft";
+        el.removeAttribute("href");
+        el.removeAttribute("target");
+        el.classList.add("btn--soldout");
+        el.setAttribute("aria-disabled", "true");
+      });
+      document.querySelectorAll('a.btn[href="#booking"]').forEach(function (el) {
+        el.textContent = "Ausverkauft – Warteliste";
+      });
+      var limit = document.querySelector(".pricing__limit");
+      if (limit) {
+        limit.innerHTML = 'Ausverkauft – alle 20 Plätze vergeben. Warteliste: <a href="mailto:info@beyondhandson.de?subject=Warteliste%20Beyond%20Hands-On">info@beyondhandson.de</a>';
+      }
+    })
+    .catch(function () { /* ohne status.json bleibt alles buchbar */ });
+
+  /* -----------------------------------------------------------------------
      2) Mobiles Menü
      ----------------------------------------------------------------------- */
   const toggle = document.getElementById("nav-toggle");
