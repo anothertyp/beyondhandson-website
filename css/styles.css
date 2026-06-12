@@ -494,7 +494,7 @@ body.nav-open .nav-toggle .icon-close { display: block; }
   overflow: hidden;
 }
 .pricing__head {
-  padding: clamp(30px, 4vw, 44px);
+  padding: clamp(20px, 3vw, 28px);
   background: linear-gradient(180deg, #f0f8f6, #ffffff);
   border-bottom: 1px solid var(--line);
   text-align: center;
@@ -526,8 +526,8 @@ body.nav-open .nav-toggle .icon-close { display: block; }
   color: var(--accent);
   font-weight: 600;
 }
-.pricing__body { padding: clamp(28px, 4vw, 40px); text-align: center; }
-.pricing__list { list-style: none; padding: 0; display: grid; gap: 13px; margin-bottom: 24px; }
+.pricing__body { padding: clamp(20px, 3vw, 28px); text-align: center; }
+.pricing__list { list-style: none; padding: 0; display: grid; gap: 11px; margin-bottom: 18px; }
 .pricing__list li { display: flex; gap: 12px; align-items: center; justify-content: center; color: var(--ink); font-weight: 500; }
 .pricing__list svg { width: 20px; height: 20px; color: var(--accent); flex: none; margin-top: 2px; }
 .pricing__limit {
@@ -541,7 +541,7 @@ body.nav-open .nav-toggle .icon-close { display: block; }
   border-radius: 999px;
   font-size: .9rem;
   font-weight: 600;
-  margin-bottom: 24px;
+  margin-bottom: 18px;
 }
 .pricing__trust {
   margin-top: 18px;
