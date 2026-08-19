@@ -757,7 +757,7 @@ body.nav-open .nav-toggle .icon-close { display: block; }
 }
 
 /* ---- Team ---- */
-.team__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
+.team__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 26px; max-width: 780px; margin-inline: auto; }
 .team-card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); transition: transform .2s ease, box-shadow .2s ease; }
 .team-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
 .team-card__photo { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; background: var(--bg-alt); }
