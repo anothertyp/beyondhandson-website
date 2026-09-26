@@ -10,7 +10,7 @@
      einsetzen, z. B.: const BOOKING_URL = "https://buy.stripe.com/abc123";
      Solange leer, zeigen die Buttons auf den Preis-Abschnitt / die E-Mail.
      ----------------------------------------------------------------------- */
-  const BOOKING_URL = "https://buy.stripe.com/eVq28takP7AtclWc5waR200";
+  const BOOKING_URL = "https://buy.stripe.com/dRmaEZ64z4ohdq0fhIaR201";
 
   if (BOOKING_URL) {
     document.querySelectorAll(".js-book").forEach(function (el) {

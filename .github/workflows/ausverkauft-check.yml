@@ -1,6 +1,8 @@
 name: Ausverkauft-Check (Stripe)
 
 # Fragt alle 30 Minuten den Stripe Payment Link ab (Limit: 20 Buchungen)
+# Aktiver Link = Early Bird 549 € (Limit 16). Die 4 Buchungen über den alten
+# 649-€-Link (plink_1ThZcWRvwD6WL59VGRwLAiI8, deaktiviert) zählen fest mit.
 # und aktualisiert status.json, sobald sich der Buchungsstand ändert.
 # Die Website liest status.json und zeigt dann automatisch "Ausverkauft".
 
@@ -28,13 +30,14 @@ jobs:
           import os
           key = os.environ["STRIPE_KEY"]
           req = urllib.request.Request(
-              "https://api.stripe.com/v1/payment_links/plink_1ThZcWRvwD6WL59VGRwLAiI8",
+              "https://api.stripe.com/v1/payment_links/plink_1UJuE3RvwD6WL59VnomXWMt1",
               headers={"Authorization": "Basic " + base64.b64encode((key + ":").encode()).decode()},
           )
           d = json.load(urllib.request.urlopen(req))
           r = (d.get("restrictions") or {}).get("completed_sessions") or {}
-          booked = int(r.get("count") or 0)
-          limit = int(r.get("limit") or 20)
+          ALT_GEBUCHT = 4
+          booked = ALT_GEBUCHT + int(r.get("count") or 0)
+          limit = ALT_GEBUCHT + int(r.get("limit") or 16)
           sold_out = (not d.get("active", True)) or booked >= limit
 
           status = {
